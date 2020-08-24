@@ -2,10 +2,10 @@ extends KinematicBody2D
 
 var state_machine
 export var run_speed_max = 150
-var run_speed
-export var jump_force_max = -500
-var jump_force = 0
-export var gravity = 450
+export var jump_force_max = -750
+export var gravity = 1200
+var is_jump = !is_on_floor()
+var velocity = Vector2(0, 0) 
 
 #func get_input():
 
@@ -14,38 +14,37 @@ func _ready():
 	state_machine = $AnimationTree.get("parameters/playback")
 
 func _physics_process(delta):
-	input(delta)
-	var velocity = Vector2(run_speed, jump_force)
-	var jump = Vector2.UP
-	velocity = move_and_slide(velocity, jump)
+	input()
+	velocity.y += delta * gravity
+	velocity = Vector2(velocity.x, velocity.y)
+	velocity = move_and_slide(velocity, Vector2(0, -1))
 
-func input(delta):
-	var current = state_machine.get_current_node()
-	run_speed = 0
-	if Input.is_action_pressed("attack") && current != "jump":
+func input():
+	var _current = state_machine.get_current_node()
+	is_jump = !is_on_floor()
+	velocity.x = 0
+	if Input.is_action_pressed("attack"):
 		state_machine.travel("attack")
 		return
 	if Input.is_action_pressed("ui_right"):
-		run_speed = run_speed_max
-		$Sprite.scale.x = 1
+		velocity.x = run_speed_max
+		$Sprite.scale.x = 2
 	if Input.is_action_pressed("ui_left"):
-		run_speed = - run_speed_max
-		$Sprite.scale.x = -1
-	if Input.is_action_just_pressed("ui_up") && current != "jump":
-		jump_force = jump_force_max
+		velocity.x = -run_speed_max
+		$Sprite.scale.x = -2
+	if Input.is_action_pressed("ui_up") && !is_jump:
+		velocity.y = jump_force_max
 	if Input.is_action_pressed("ui_down"):
 		pass
 	
-	if run_speed == 0 && jump_force >= 0:
+	if velocity.x == 0 && !is_jump:
 		state_machine.travel("idle")
-	if run_speed != 0:
+	if velocity.x != 0 && !is_jump:
 		state_machine.travel("walk")
-	if jump_force < gravity:
+	if is_jump:
 		state_machine.travel("jump")
-		jump_force += 2 * gravity * delta
-		
+	
 func hurt():
 	state_machine.travel("hurt")
 func die():
 	state_machine.travel("die")
-

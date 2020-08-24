@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://adventurer-v1.5-Sheet.png" type="Texture" id=1]
 [ext_resource path="res://animations/walk.tres" type="Animation" id=2]
@@ -8,59 +8,62 @@
 [ext_resource path="res://animations/attack.tres" type="Animation" id=6]
 [ext_resource path="res://player.gd" type="Script" id=7]
 
+[sub_resource type="RectangleShape2D" id=17]
+extents = Vector2( 6.19431, 7.63051 )
+
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 15.7524
 height = 28.4496
 
-[sub_resource type="AnimationNodeAnimation" id=17]
+[sub_resource type="AnimationNodeAnimation" id=2]
 animation = "attack"
 
-[sub_resource type="AnimationNodeAnimation" id=18]
+[sub_resource type="AnimationNodeAnimation" id=3]
 animation = "idle"
 
-[sub_resource type="AnimationNodeAnimation" id=19]
+[sub_resource type="AnimationNodeAnimation" id=4]
 animation = "jump"
 
-[sub_resource type="AnimationNodeAnimation" id=20]
+[sub_resource type="AnimationNodeAnimation" id=5]
 animation = "run"
 
-[sub_resource type="AnimationNodeAnimation" id=21]
+[sub_resource type="AnimationNodeAnimation" id=6]
 animation = "walk"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=22]
+[sub_resource type="AnimationNodeStateMachineTransition" id=7]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=23]
+[sub_resource type="AnimationNodeStateMachineTransition" id=8]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=24]
+[sub_resource type="AnimationNodeStateMachineTransition" id=9]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=25]
+[sub_resource type="AnimationNodeStateMachineTransition" id=10]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=26]
+[sub_resource type="AnimationNodeStateMachineTransition" id=11]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=27]
+[sub_resource type="AnimationNodeStateMachineTransition" id=12]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=28]
+[sub_resource type="AnimationNodeStateMachineTransition" id=13]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=29]
+[sub_resource type="AnimationNodeStateMachineTransition" id=14]
 
-[sub_resource type="AnimationNodeStateMachine" id=30]
-states/attack/node = SubResource( 17 )
+[sub_resource type="AnimationNodeStateMachine" id=15]
+states/attack/node = SubResource( 2 )
 states/attack/position = Vector2( 343, 104 )
-states/idle/node = SubResource( 18 )
+states/idle/node = SubResource( 3 )
 states/idle/position = Vector2( 77, 104 )
-states/jump/node = SubResource( 19 )
+states/jump/node = SubResource( 4 )
 states/jump/position = Vector2( 226, 31 )
-states/run/node = SubResource( 20 )
+states/run/node = SubResource( 5 )
 states/run/position = Vector2( 471, 176 )
-states/walk/node = SubResource( 21 )
+states/walk/node = SubResource( 6 )
 states/walk/position = Vector2( 276, 175 )
-transitions = [ "idle", "jump", SubResource( 22 ), "idle", "walk", SubResource( 23 ), "idle", "attack", SubResource( 24 ), "walk", "run", SubResource( 25 ), "run", "walk", SubResource( 26 ), "walk", "idle", SubResource( 27 ), "jump", "idle", SubResource( 28 ), "attack", "idle", SubResource( 29 ) ]
+transitions = [ "idle", "jump", SubResource( 7 ), "idle", "walk", SubResource( 8 ), "idle", "attack", SubResource( 9 ), "walk", "run", SubResource( 10 ), "run", "walk", SubResource( 11 ), "walk", "idle", SubResource( 12 ), "jump", "idle", SubResource( 13 ), "attack", "idle", SubResource( 14 ) ]
 start_node = "idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=16]
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
-position = Vector2( 500, 300 )
+position = Vector2( 491.171, 303.784 )
 script = ExtResource( 7 )
 __meta__ = {
 "_edit_group_": true
@@ -71,7 +74,14 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
 vframes = 16
 hframes = 8
-frame = 1
+frame = 2
+
+[node name="SwordHit" type="Area2D" parent="Sprite"]
+
+[node name="swordCollision" type="CollisionShape2D" parent="Sprite/SwordHit"]
+position = Vector2( 17.2384, 7.77832 )
+shape = SubResource( 17 )
+disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/attack = ExtResource( 6 )
@@ -80,12 +90,12 @@ anims/jump = ExtResource( 5 )
 anims/run = ExtResource( 3 )
 anims/walk = ExtResource( 2 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 12.6134, 7.14764 )
+[node name="playerCollider2d" type="CollisionShape2D" parent="."]
+position = Vector2( 5.88623, 7.56808 )
 shape = SubResource( 1 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 30 )
+tree_root = SubResource( 15 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 16 )

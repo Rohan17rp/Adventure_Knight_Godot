@@ -1,18 +1,53 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://tileset/jungle.tres" type="TileSet" id=1]
+[ext_resource path="res://tileset/base.tres" type="TileSet" id=1]
 [ext_resource path="res://player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://enemy.tscn" type="PackedScene" id=3]
+[ext_resource path="res://main.gd" type="Script" id=4]
 
-[node name="main" type="Node2D"]
-
-[node name="TileMap" type="TileMap" parent="."]
-tile_set = ExtResource( 1 )
-cell_size = Vector2( 48, 48 )
-format = 1
-tile_data = PoolIntArray( 65535, 1610612745, 0, 131071, 1610612745, 0, 196607, 1610612745, 0, 262143, 1610612745, 0, 327679, 1610612745, 0, 262147, 0, 0, 393215, 1610612745, 0, 458751, 1610612745, 0, 393227, 0, 0, 524287, 1610612745, 0, 589823, 1610612745, 0, 524293, 536870912, 0, 655359, 1610612745, 0, 720895, 1610612745, 0, 786431, 0, 0, 720897, 0, 0, 720898, 0, 0, 720899, 0, 0, 720900, 0, 0, 720901, 0, 0, 720902, 0, 0, 720903, 0, 0, 720904, 0, 0, 720905, 0, 0, 720906, 0, 0, 720907, 0, 0, 720908, 0, 0, 720909, 0, 0, 720912, 0, 0, 720915, 0, 0 )
+[node name="main" type="Node2D" groups=[
+"enemies",
+"player",
+]]
+script = ExtResource( 4 )
 
 [node name="KinematicBody2D" parent="." instance=ExtResource( 2 )]
 
-[node name="Camera2D" type="Camera2D" parent="KinematicBody2D"]
-position = Vector2( -500, -300 )
-[connection signal="tree_entered" from="KinematicBody2D" to="." method="_on_KinematicBody2D_tree_entered"]
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="score" type="Label" parent="HUD"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+text = "health : 100
+"
+align = 2
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HUD"]
+anchor_left = 0.9
+anchor_right = 0.95
+margin_left = -21.5999
+margin_right = -17.8
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+text = "Level: 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="enemy1" parent="." instance=ExtResource( 3 )]
+position = Vector2( 718.935, 503.838 )
+
+[node name="enemy2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 180.12, 514.464 )
+
+[node name="TileMap" type="TileMap" parent="."]
+position = Vector2( 38.0546, 283.031 )
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 64, 32 )
+format = 1
+tile_data = PoolIntArray( 65534, -1610612736, 0, 196606, -1610612736, 0, 262142, -1610612736, 0, 262159, -1073741824, 0, 393214, -1610612736, 0, 458750, -1610612736, 0, 458758, 0, 0, 589822, 0, 0, 524288, 0, 0, 524290, 0, 0, 524292, 0, 0, 524294, 0, 0, 524296, 0, 0, 524298, 0, 0, 524300, 0, 0, 524302, 0, 0 )
